@@ -13,6 +13,7 @@ const responses = require('./helpers/responses');
 mongoose.connect('mongodb://localhost/sailing');
 
 const app = express();
+
 app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +26,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 const trips = require('./routes/trips');
 const users = require('./routes/users');

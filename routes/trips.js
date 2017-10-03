@@ -7,7 +7,10 @@ const response = require('../helpers/responses');
 
 //LIST ALL THE TRIPS
 router.get('/', (req, res, next) => {
-  Trip.find({}, (err, trips) => {
+  let filters = {};
+  // console.log(req.query.searchTerm);
+  // console.log(req.query.startLocation);
+  Trip.find(filters, (err, trips) => {
     if (err) {
       return next(res);
     }
