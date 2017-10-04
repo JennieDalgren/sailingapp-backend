@@ -2,8 +2,8 @@ const express    = require('express');
 const router     = express.Router();
 const Trip      = require('../models/trip').Trip;
 
-const response = require('../helpers/responses');
-const upload = require('../configs/multer');
+const response = require('../helpers/response');
+const upload = require('../config/multer');
 
 //LIST ALL THE TRIPS
 router.get('/', (req, res, next) => {

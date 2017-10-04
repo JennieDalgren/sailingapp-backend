@@ -7,19 +7,45 @@ const bodyParser   = require('body-parser');
 const mongoose     = require('mongoose');
 const cors         = require('cors');
 const multer       = require('multer');
+const session      = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const passport     = require('passport');
 
-const responses = require('./helpers/responses');
+const configure = require('./config/passport');
+const responses = require('./helpers/response');
+
+const trips = require('./routes/trips');
+const users = require('./routes/users');
+const auth = require('./routes/auth');
+
+const app = express();
 
 mongoose.connect('mongodb://localhost/sailing');
 
-const app = express();
-var corsOptions = {
+
+app.use(session({
+  secret: 'sailing-app',
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoStore({
+    mongooseConnection: mongoose.connection
+  })
+}));
+
+const corsOptions = {
   origin: 'http://localhost:4200',
   credentials: true,
   allowedHeaders: ['Content-Type'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 };
+
 app.use(cors(corsOptions));
+
+configure(passport);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -32,14 +58,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const trips = require('./routes/trips');
-const users = require('./routes/users');
 
 app.use('/trips', trips);
 app.use('/users', users);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -47,6 +73,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
