@@ -13,8 +13,13 @@ const responses = require('./helpers/responses');
 mongoose.connect('mongodb://localhost/sailing');
 
 const app = express();
-
-app.use(cors());
+var corsOptions = {
+  origin: 'http://localhost:4200',
+  credentials: true,
+  allowedHeaders: ['Content-Type'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+};
+app.use(cors(corsOptions));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

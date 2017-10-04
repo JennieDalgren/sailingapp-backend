@@ -3,7 +3,7 @@ const router     = express.Router();
 const Trip      = require('../models/trip').Trip;
 
 const response = require('../helpers/responses');
-
+const upload = require('../configs/multer');
 
 //LIST ALL THE TRIPS
 router.get('/', (req, res, next) => {
@@ -40,8 +40,16 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
+//UPLOAD FILE
+router.post('/upload', upload.single('file'), (req, res, next) => {
+  const data = {
+    fileName: `/uploads/${req.file.filename}`
+  };
+  return response.data(req, res, data);
+});
+
 //CREATE A TRIP (as a host)
-router.post('/', upload.single('file'), (req, res, next) => {
+router.post('/', (req, res, next) => {
   const newTrip = new Trip({
     name: req.body.name,
     startDate: req.body.startDate,
@@ -51,7 +59,7 @@ router.post('/', upload.single('file'), (req, res, next) => {
     description: req.body.description,
     price: req.body.price,
     availableSpots: req.body.availableSpots,
-    photos:[   `/uploads/${req.file.filename}`]
+    photos:[ req.body.fileName ]
 
   });
 
