@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
 });
 
 
-//ONE TRIP **************
+//ONE TRIP
 router.get('/:id', (req, res, next) => {
 
   if (!req.params.id.match(/^[a-zA-Z0-9]{24}$/)) {
@@ -39,6 +39,35 @@ router.get('/:id', (req, res, next) => {
     return response.data(req, res, data);
   });
 });
+
+//CREATE A TRIP (as a host)
+router.post('/', upload.single('file'), (req, res, next) => {
+  const newTrip = new Trip({
+    name: req.body.name,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    startLocation: req.body.startLocation,
+    endLocation: req.body.endLocation,
+    description: req.body.description,
+    price: req.body.price,
+    availableSpots: req.body.availableSpots,
+    photos:[   `/uploads/${req.file.filename}`]
+
+  });
+
+  newTrip.save( (err) => {
+    if (err) {
+      return response.unexpectedError(err);
+    }
+    if (newTrip.errors) {
+      return response.notFound(req, res);
+    }
+    let data = newTrip.asData();
+    return response.data(req, res, data);
+  });
+});
+
+
 
 
 module.exports = router;

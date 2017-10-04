@@ -18,7 +18,7 @@ const TripSchema = new Schema({
     status: { type: String, default: 'pending' }
   }],
   price: { type: String },
-  tripName: { type: String },
+  name: { type: String },
   description: {type: String }
 });
 
