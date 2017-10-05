@@ -22,7 +22,6 @@ const app = express();
 
 mongoose.connect('mongodb://localhost/sailing');
 
-
 app.use(session({
   secret: 'sailing-app',
   resave: true,
@@ -58,10 +57,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+  //console.log("incoming request", req.method, req.path, req.cookies);
+  next();
+})
 
-app.use('/trips', trips);
-app.use('/users', users);
 app.use('/auth', auth);
+app.use('/users', users);
+app.use('/trips', trips);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

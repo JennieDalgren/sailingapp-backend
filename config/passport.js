@@ -16,9 +16,8 @@ function configure(passport) {
     User.findOne({
       email
     }, (err, user) => {
-      console.log(user);
+
       if (err) {
-        console.log("qwerqwerqwr");
         return next(err);
       }
 
@@ -27,14 +26,13 @@ function configure(passport) {
           message: 'Incorrect email'
         });
       }
-      console.log(user.password);
+
       if (!bcrypt.compareSync(password, user.password)) {
-        console.log("inside bcrypt")
         return next(null, false, {
           message: 'Incorrect password'
         });
       }
-      console.log("final things");
+    
       return next(null, user);
     });
   }));

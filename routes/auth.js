@@ -7,7 +7,6 @@ const response = require('../helpers/response');
 const User = require('../models/user').User;
 
 router.post('/login', (req, res, next) => {
-  console.log("we r here");
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       return next(err);
@@ -86,6 +85,7 @@ router.post('/logout', (req, res) => {
 });
 
 router.get('/me', (req, res) => {
+  console.log("me: ", req.user);
   if (req.isAuthenticated()) {
     let user = req.user;
     return response.data(req, res, user.asData());

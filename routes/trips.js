@@ -17,6 +17,7 @@ router.get('/', (req, res, next) => {
     let data = trips.map((trip) => {
       return trip.asData();
     });
+    //console.log('home: ', req.user);
     return response.data(req, res, data);
   });
 });
@@ -35,6 +36,7 @@ router.get('/:id', (req, res, next) => {
     if (!trip) {
       return response.notFound(req, res);
     }
+    //console.log('single trip: ', req.user);
     let data = trip.asData();
     return response.data(req, res, data);
   });
@@ -44,12 +46,16 @@ router.get('/:id', (req, res, next) => {
 router.post('/upload', upload.single('file'), (req, res, next) => {
   const data = {
     fileName: `/uploads/${req.file.filename}`
+
   };
+  //console.log('upload: ', req.user);
   return response.data(req, res, data);
 });
 
 //CREATE A TRIP (as a host)
 router.post('/', (req, res, next) => {
+
+  //console.log("trip: ", req.user);
   const newTrip = new Trip({
     name: req.body.name,
     startDate: req.body.startDate,
@@ -59,7 +65,8 @@ router.post('/', (req, res, next) => {
     description: req.body.description,
     price: req.body.price,
     availableSpots: req.body.availableSpots,
-    photos:[ req.body.fileName ]
+    photos:[ req.body.fileName ],
+    host: req.user._id
 
   });
 
