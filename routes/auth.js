@@ -99,15 +99,13 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
 
 //Update USER profile
 router.post('/:id', (req, res, next) => {
-  console.log('im here in post route');
-  
+
   const userUpdate = {
-    name: req.body.username,
-    email: req.body.email,
-    phoneNumber: req.body.phoneNumber,
-    photo: req.body.userFileName,
-    bio: req.body.bio,
-    paymentInfo: req.body.paymentInfo
+    name: req.body.username || req.user.name,
+    email: req.body.email || req.user.email,
+    phoneNumber: req.body.phoneNumber || req.user.phoneNumber,
+    photo: req.body.userFileName || req.user.photo,
+    bio: req.body.bio || req.user.bio
   };
 
   User.findByIdAndUpdate(req.user._id, userUpdate, (err, user) => {

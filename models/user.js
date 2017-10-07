@@ -20,7 +20,7 @@ const UserSchema = new Schema({
   },
   phoneNumber: {
     type: String,
-    
+
    },
   photo: {
     type: String
@@ -45,7 +45,11 @@ UserSchema.methods.asData = function() {
   return {
     id: this._id,
     name: this.name,
-    email: this.email
+    email: this.email,
+    phoneNumber: this.phoneNumber,
+    bio: this.bio,
+    photo: this.photo
+
   };
 };
 
