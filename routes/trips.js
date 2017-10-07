@@ -29,7 +29,7 @@ router.get('/:id', (req, res, next) => {
   if (!req.params.id.match(/^[a-zA-Z0-9]{24}$/)) {
     return response.notFound(req, res);
   }
-  Trip.findById(req.params.id, (err, trip) => {
+  Trip.findById(req.params.id).populate('host', 'name phoneNumber').exec ((err, trip) => {
     if (err) {
       return next(err);
     }
@@ -42,7 +42,7 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
-//UPLOAD FILE
+//UPLOAD TRIPFILE
 router.post('/upload', upload.single('file'), (req, res, next) => {
   const data = {
     fileName: `/uploads/${req.file.filename}`
@@ -58,6 +58,7 @@ router.post('/', (req, res, next) => {
   //console.log("trip: ", req.user);
   const newTrip = new Trip({
     name: req.body.name,
+    boat: req.body.boat,
     startDate: req.body.startDate,
     endDate: req.body.endDate,
     startLocation: req.body.startLocation,
@@ -67,7 +68,7 @@ router.post('/', (req, res, next) => {
     availableSpots: req.body.availableSpots,
     photos:[ req.body.fileName ],
     host: req.user._id
-
+    // tripLength:  CALCULATE TRIP LENGTH HERE !!!!!!
   });
 
   newTrip.save( (err) => {
@@ -82,6 +83,61 @@ router.post('/', (req, res, next) => {
   });
 });
 
+
+//BOOK A TRIP (as a guest)
+router.post('/:id', (req, res, next) => {
+  const tripUpdate = {
+    $push: {
+      'bookings': {
+        userId: req.user._id,
+        guestcount: req.body.guestCount,
+        message: req.body.message,
+        status: 'pending'
+      }
+    }
+  };
+
+  Trip.findByIdAndUpdate(req.params.id, tripUpdate, (err, trip) => {
+    if (err) {
+      return next(err);
+    }
+    if (!trip) {
+      return response.notFound(req, res);
+    }
+    let data = trip.asData();
+    return response.data(req, res, data);
+  });
+});
+
+//LIST ALL MY HOSTED TRIPS
+// router.get('/hosted', (req, res, next) => {
+//   let filters = {host: req.user._id};
+//   Trip.find(filters, (err, trips) => {
+//     if (err) {
+//       return next(res);
+//     }
+//     let data = trips.map((trip) => {
+//       return trip.asData();
+//     });
+//     //console.log('home: ', req.user);
+//     return response.data(req, res, data);
+//   });
+// });
+
+//LIST ALL MY ATTENDING TRIPS
+// router.get('/atteding', (req, res, next) => {
+//   let filters = {host: req.user._id};
+//   Trip.find(filters, (err, trips) => {
+//     if (err) {
+//       return next(res);
+//     }
+//     let data = trips.map((trip) => {
+//       return trip.asData();
+//     });
+//     //console.log('home: ', req.user);
+//     return response.data(req, res, data);
+//   });
+// });
 
 
 

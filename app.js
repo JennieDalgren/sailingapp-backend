@@ -8,7 +8,7 @@ const mongoose     = require('mongoose');
 const cors         = require('cors');
 const multer       = require('multer');
 const session      = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+const MongoStore   = require('connect-mongo')(session);
 const passport     = require('passport');
 
 const configure = require('./config/passport');
@@ -16,7 +16,7 @@ const responses = require('./helpers/response');
 
 const trips = require('./routes/trips');
 const users = require('./routes/users');
-const auth = require('./routes/auth');
+const auth  = require('./routes/auth');
 
 const app = express();
 
@@ -60,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use((req, res, next) => {
   //console.log("incoming request", req.method, req.path, req.cookies);
   next();
-})
+});
 
 app.use('/auth', auth);
 app.use('/users', users);

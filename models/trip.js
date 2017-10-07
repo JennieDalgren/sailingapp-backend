@@ -15,11 +15,14 @@ const TripSchema = new Schema({
   bookings: [{
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
     guestcount: { type: Number },
+    message: { type: String },
     status: { type: String, default: 'pending' }
   }],
   price: { type: String },
+  boat: { type: String },
   name: { type: String },
-  description: {type: String }
+  description: {type: String },
+  tripLength: { type: Number }
 });
 
 //THIS IS FOR THE HOST TO CREATE TRIP

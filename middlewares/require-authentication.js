@@ -13,7 +13,6 @@ function isAuthenticated(req, res, next){
   //   req.user = user;
   //   return next();
   // });
-  console.log("auth: ", req.user);
   return next();
 }
 
