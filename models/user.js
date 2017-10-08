@@ -49,12 +49,10 @@ UserSchema.methods.asData = function() {
     phoneNumber: this.phoneNumber,
     bio: this.bio,
     photo: this.photo
-
   };
 };
 
 const User = mongoose.model('User', UserSchema);
-
 
 module.exports = {
   User
