@@ -29,7 +29,7 @@ router.get('/:id', (req, res, next) => {
   if (!req.params.id.match(/^[a-zA-Z0-9]{24}$/)) {
     return response.notFound(req, res);
   }
-  Trip.findById(req.params.id).populate('host', 'name phoneNumber').exec ((err, trip) => {
+  Trip.findById(req.params.id).populate('host', 'name phoneNumber photo email').exec ((err, trip) => {
     if (err) {
       return next(err);
     }

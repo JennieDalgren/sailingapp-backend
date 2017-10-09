@@ -89,7 +89,7 @@ router.post('/logout', (req, res) => {
 //UPLOAD FILE
 router.post('/upload', upload.single('file'), (req, res, next) => {
   const data = {
-    userFileName: `/uploads/${req.file.userFileName}`
+    userFileName: `/uploads/${req.file.filename}`
 
   };
 
@@ -98,17 +98,17 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
 
 
 //Update USER profile
-router.post('/:id', (req, res, next) => {
+router.put('/me', (req, res, next) => {
 
   const userUpdate = {
-    name: req.body.username || req.user.name,
+    name: req.body.name || req.user.name,
     email: req.body.email || req.user.email,
     phoneNumber: req.body.phoneNumber || req.user.phoneNumber,
-    photo: req.body.userFileName || req.user.photo,
+    photo: req.body.photo || req.user.photo,
     bio: req.body.bio || req.user.bio
   };
 
-  User.findByIdAndUpdate(req.user._id, userUpdate, (err, user) => {
+  User.findByIdAndUpdate(req.user._id, userUpdate, {new: true}, (err, user) => {
     if (err) {
       return next(err);
     }
@@ -123,8 +123,9 @@ router.post('/:id', (req, res, next) => {
 
 router.get('/me', (req, res) => {
   if (req.isAuthenticated()) {
-    let user = req.user;
-    return response.data(req, res, user.asData());
+    return User.findById(req.user._id, (err, user) => {
+      return response.data(req, res, user.asData());
+    });
   }
 
   return response.notFound(req, res);
