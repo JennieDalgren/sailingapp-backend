@@ -52,7 +52,6 @@ router.get('/attending', (req, res, next) => {
   });
 });
 
-
 //ONE TRIP
 router.get('/:id', (req, res, next) => {
 
@@ -83,6 +82,10 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
 
 //CREATE A TRIP (as a host)
 router.post('/', (req, res, next) => {
+  //this is to calculate the trip length
+  var day_start = new Date(req.body.startDate);
+  var day_end = new Date(req.body.endDate);
+  var total_days = (day_end - day_start) / (1000 * 60 * 60 * 24);
 
   const newTrip = new Trip({
     name: req.body.name,
@@ -95,8 +98,8 @@ router.post('/', (req, res, next) => {
     price: req.body.price,
     availableSpots: req.body.availableSpots,
     photos:[ req.body.fileName ],
-    host: req.user._id
-    // tripLength:  CALCULATE TRIP LENGTH HERE !!!!!!
+    host: req.user._id,
+    tripLength: total_days
   });
 
   newTrip.save( (err) => {
@@ -110,7 +113,6 @@ router.post('/', (req, res, next) => {
     return response.data(req, res, data);
   });
 });
-
 
 
 //BOOK A TRIP (as a guest)

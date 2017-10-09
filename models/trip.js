@@ -40,7 +40,8 @@ TripSchema.methods.asData = function() {
     price: this.price,
     name: this.name,
     boat: this.boat,
-    description: this.description
+    description: this.description,
+    tripLength: this.tripLength
   };
 };
 
