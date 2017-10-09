@@ -8,6 +8,7 @@ const User = require('../models/user').User;
 
 const upload = require('../config/multer');
 
+//LOGIN
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
@@ -26,6 +27,7 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
+//CREATE ACCOUNT
 router.post('/signup', (req, res, next) => {
   const {
     name,
@@ -81,6 +83,7 @@ router.post('/signup', (req, res, next) => {
   });
 });
 
+//LOG OUT
 router.post('/logout', (req, res) => {
   req.logout();
   return response.ok(req, res);
@@ -102,7 +105,6 @@ router.put('/me', (req, res, next) => {
 
   const userUpdate = {
     name: req.body.name || req.user.name,
-    email: req.body.email || req.user.email,
     phoneNumber: req.body.phoneNumber || req.user.phoneNumber,
     photo: req.body.photo || req.user.photo,
     bio: req.body.bio || req.user.bio
@@ -130,5 +132,6 @@ router.get('/me', (req, res) => {
 
   return response.notFound(req, res);
 });
+
 
 module.exports = router;

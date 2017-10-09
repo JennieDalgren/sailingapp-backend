@@ -39,19 +39,18 @@ router.get('/hosted', (req, res, next) => {
 
 //LIST ALL MY ATTENDING TRIPS
 router.get('/attending', (req, res, next) => {
-  let filters = {bookings: req.user._id};
+  let filters = {bookings: { $elemMatch: {userId: req.user._id} } };
   Trip.find(filters, (err, trips) => {
+
     if (err) {
       return next(res);
     }
     let data = trips.map((trip) => {
       return trip.asData();
     });
-    //console.log('home: ', req.user);
     return response.data(req, res, data);
   });
 });
-
 
 
 //ONE TRIP
