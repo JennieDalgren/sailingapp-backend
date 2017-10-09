@@ -22,6 +22,37 @@ router.get('/', (req, res, next) => {
   });
 });
 
+//LIST ALL MY HOSTED TRIPS
+router.get('/hosted', (req, res, next) => {
+  let filters = {host: req.user._id};
+  Trip.find(filters, (err, trips) => {
+    if (err) {
+      return next(res);
+    }
+    let data = trips.map((trip) => {
+      return trip.asData();
+    });
+    //console.log('home: ', req.user);
+    return response.data(req, res, data);
+  });
+});
+
+//LIST ALL MY ATTENDING TRIPS
+router.get('/attending', (req, res, next) => {
+  let filters = {bookings: req.user._id};
+  Trip.find(filters, (err, trips) => {
+    if (err) {
+      return next(res);
+    }
+    let data = trips.map((trip) => {
+      return trip.asData();
+    });
+    //console.log('home: ', req.user);
+    return response.data(req, res, data);
+  });
+});
+
+
 
 //ONE TRIP
 router.get('/:id', (req, res, next) => {
@@ -36,9 +67,8 @@ router.get('/:id', (req, res, next) => {
     if (!trip) {
       return response.notFound(req, res);
     }
-    //console.log('single trip: ', req.user);
     let data = trip.asData();
-    return response.data(req, res, data);
+      return response.data(req, res, data);
   });
 });
 
@@ -55,7 +85,6 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
 //CREATE A TRIP (as a host)
 router.post('/', (req, res, next) => {
 
-  //console.log("trip: ", req.user);
   const newTrip = new Trip({
     name: req.body.name,
     boat: req.body.boat,
@@ -84,6 +113,7 @@ router.post('/', (req, res, next) => {
 });
 
 
+
 //BOOK A TRIP (as a guest)
 router.post('/:id', (req, res, next) => {
   const tripUpdate = {
@@ -108,36 +138,6 @@ router.post('/:id', (req, res, next) => {
     return response.data(req, res, data);
   });
 });
-
-//LIST ALL MY HOSTED TRIPS
-// router.get('/hosted', (req, res, next) => {
-//   let filters = {host: req.user._id};
-//   Trip.find(filters, (err, trips) => {
-//     if (err) {
-//       return next(res);
-//     }
-//     let data = trips.map((trip) => {
-//       return trip.asData();
-//     });
-//     //console.log('home: ', req.user);
-//     return response.data(req, res, data);
-//   });
-// });
-
-//LIST ALL MY ATTENDING TRIPS
-// router.get('/atteding', (req, res, next) => {
-//   let filters = {host: req.user._id};
-//   Trip.find(filters, (err, trips) => {
-//     if (err) {
-//       return next(res);
-//     }
-//     let data = trips.map((trip) => {
-//       return trip.asData();
-//     });
-//     //console.log('home: ', req.user);
-//     return response.data(req, res, data);
-//   });
-// });
 
 
 

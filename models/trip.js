@@ -25,24 +25,6 @@ const TripSchema = new Schema({
   tripLength: { type: Number }
 });
 
-//THIS IS FOR THE HOST TO CREATE TRIP
-// royuter.post(/trips
-//   let trip new Trip(req.body)
-//   trip.host = req.passport.user.id;
-//
-//THIS IS FOR THE GUEST TO BOOK TRIP
-// router.post(/trip/:id/booking)
-//   Trip.findById(req.param.id, (err, trip)
-//     if (!trip) notFound
-//     trip.bookins.push({
-//       userId: req.hksdfhjfdsbhjfdsbhjfds
-//       guestcount: req.body.guestcount
-//     })
-//
-
-
-
-
 
 TripSchema.methods.asData = function() {
   return {
@@ -56,7 +38,8 @@ TripSchema.methods.asData = function() {
     host: this.host,      //GET USER FROM DATABASE
     // bookings: [{userid, guestcount, statut confirmed/pending}],
     price: this.price,
-    tripName: this.tripName,
+    name: this.name,
+    boat: this.boat,
     description: this.description
   };
 };
