@@ -41,7 +41,8 @@ TripSchema.methods.asData = function() {
     name: this.name,
     boat: this.boat,
     description: this.description,
-    tripLength: this.tripLength
+    tripLength: this.tripLength,
+    bookings: this.bookings
   };
 };
 

@@ -58,7 +58,10 @@ router.get('/:id', (req, res, next) => {
   if (!req.params.id.match(/^[a-zA-Z0-9]{24}$/)) {
     return response.notFound(req, res);
   }
-  Trip.findById(req.params.id).populate('host', 'name phoneNumber photo email').exec ((err, trip) => {
+  Trip.findById(req.params.id)
+    .populate('host', 'name phoneNumber photo email')
+    .populate('bookings.userId', 'name phoneNumber photo email')
+    .exec ((err, trip) => {
     if (err) {
       return next(err);
     }
@@ -138,6 +141,20 @@ router.post('/:id', (req, res, next) => {
     let data = trip.asData();
     return response.data(req, res, data);
   });
+});
+
+
+
+router.put('/:tripId/booking/:bookingId', (req, res, next) => {
+  console.log('trip id' , req.params.tripId );
+  console.log('BOOKING id' , req.params.bookingId );
+  Trip.Update({'trip._id' : req.params.tripId, 'bookings._id': req.params.bookingId},
+    {'$set': {
+      'bookings.$.status': 'confirmed',
+    }
+    }
+  );
+
 });
 
 
