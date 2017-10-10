@@ -145,15 +145,17 @@ router.post('/:id', (req, res, next) => {
 
 
 
-router.put('/:tripId/booking/:bookingId', (req, res, next) => {
+router.post('/:tripId/booking/:bookingId', (req, res, next) => {
   console.log('trip id' , req.params.tripId );
   console.log('BOOKING id' , req.params.bookingId );
-  Trip.Update({'trip._id' : req.params.tripId, 'bookings._id': req.params.bookingId},
+  Trip.update({'trips._id' : req.params.tripId, 'bookings._id': req.params.bookingId},
     {'$set': {
       'bookings.$.status': 'confirmed',
-    }
+      }
     }
   );
+  return response.data(req, res);
+
 
 });
 
