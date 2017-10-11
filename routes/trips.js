@@ -120,6 +120,7 @@ router.post('/', (req, res, next) => {
 
 //BOOK A TRIP (as a guest)
 router.post('/:id', (req, res, next) => {
+
   const tripUpdate = {
     $push: {
       'bookings': {
@@ -143,23 +144,8 @@ router.post('/:id', (req, res, next) => {
   });
 });
 
-// 
-// //CONFIRM BOOKING
-// router.get('/:tripId/booking/:bookingId', (req, res, next) => {
-//   Trip.findOneAndUpdate( {_id:req.params.tripId,
-//     "bookings._id":req.params.bookingId},
-//     {$set: {"bookings.$.status": "rejected"}}, (err, trip) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     if (!trip) {
-//       return response.notFound(req, res);
-//     }
-//     return res.json(trip);
-//   });
-// });
 
-//REJECT BOOKING
+//HANDLE BOOKING (as a host)
 router.get('/:tripId/booking/:bookingId/:status', (req, res, next) => {
   Trip.findOneAndUpdate( {_id:req.params.tripId,
     "bookings._id":req.params.bookingId},
