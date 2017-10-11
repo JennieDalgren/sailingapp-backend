@@ -143,21 +143,40 @@ router.post('/:id', (req, res, next) => {
   });
 });
 
+// 
+// //CONFIRM BOOKING
+// router.get('/:tripId/booking/:bookingId', (req, res, next) => {
+//   Trip.findOneAndUpdate( {_id:req.params.tripId,
+//     "bookings._id":req.params.bookingId},
+//     {$set: {"bookings.$.status": "rejected"}}, (err, trip) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     if (!trip) {
+//       return response.notFound(req, res);
+//     }
+//     return res.json(trip);
+//   });
+// });
 
-
-router.post('/:tripId/booking/:bookingId', (req, res, next) => {
-  console.log('trip id' , req.params.tripId );
-  console.log('BOOKING id' , req.params.bookingId );
-  Trip.update({'trips._id' : req.params.tripId, 'bookings._id': req.params.bookingId},
-    {'$set': {
-      'bookings.$.status': 'confirmed',
-      }
+//REJECT BOOKING
+router.get('/:tripId/booking/:bookingId/:status', (req, res, next) => {
+  Trip.findOneAndUpdate( {_id:req.params.tripId,
+    "bookings._id":req.params.bookingId},
+    {$set: {"bookings.$.status": req.params.status}}, (err, trip) => {
+    if (err) {
+      return next(err);
     }
-  );
-  return response.data(req, res);
-
-
+    if (!trip) {
+      return response.notFound(req, res);
+    }
+    return res.json(trip);
+  });
 });
+
+
+
+
 
 
 

@@ -35,8 +35,7 @@ TripSchema.methods.asData = function() {
     startDate: this.startDate,
     endDate: this.endDate,
     availableSpots: this.availableSpots,
-    host: this.host,      //GET USER FROM DATABASE
-    // bookings: [{userid, guestcount, statut confirmed/pending}],
+    host: this.host,      
     price: this.price,
     name: this.name,
     boat: this.boat,
