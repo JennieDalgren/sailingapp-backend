@@ -1,4 +1,4 @@
-const dotenv       = require('dotenv');
+const dotenv       = require('dotenv').config();
 const express      = require('express');
 const path         = require('path');
 const favicon      = require('serve-favicon');
@@ -33,7 +33,7 @@ app.use(session({
 }));
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL,
+  origin: process.env.FRONTEND_URL ,
   credentials: true,
   allowedHeaders: ['Content-Type'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
