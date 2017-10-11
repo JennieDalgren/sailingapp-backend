@@ -1,3 +1,4 @@
+const dotenv       = require('dotenv');
 const express      = require('express');
 const path         = require('path');
 const favicon      = require('serve-favicon');
@@ -20,7 +21,7 @@ const auth  = require('./routes/auth');
 
 const app = express();
 
-mongoose.connect('mongodb://localhost/sailing');
+mongoose.connect(process.env.MONGO_DB_URL);
 
 app.use(session({
   secret: 'sailing-app',
@@ -32,7 +33,7 @@ app.use(session({
 }));
 
 const corsOptions = {
-  origin: 'http://localhost:4200',
+  origin: process.env.FRONTEND_URL,
   credentials: true,
   allowedHeaders: ['Content-Type'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
