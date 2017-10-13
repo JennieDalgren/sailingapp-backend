@@ -1,15 +1,12 @@
 const express    = require('express');
 const router     = express.Router();
-const Trip      = require('../models/trip').Trip;
-
-const response = require('../helpers/response');
-const upload = require('../config/multer');
+const Trip       = require('../models/trip').Trip;
+const response   = require('../helpers/response');
+const upload     = require('../config/multer');
 
 //LIST ALL THE TRIPS
 router.get('/', (req, res, next) => {
   let filters = {};
-  // console.log(req.query.searchTerm);
-  // console.log(req.query.startLocation);
   Trip.find(filters, (err, trips) => {
     if (err) {
       return next(res);
@@ -17,7 +14,6 @@ router.get('/', (req, res, next) => {
     let data = trips.map((trip) => {
       return trip.asData();
     });
-    //console.log('home: ', req.user);
     return response.data(req, res, data);
   });
 });
@@ -32,7 +28,6 @@ router.get('/hosted', (req, res, next) => {
     let data = trips.map((trip) => {
       return trip.asData();
     });
-    //console.log('home: ', req.user);
     return response.data(req, res, data);
   });
 });
@@ -79,7 +74,6 @@ router.post('/upload', upload.single('file'), (req, res, next) => {
     fileName: `/uploads/${req.file.filename}`
 
   };
-  //console.log('upload: ', req.user);
   return response.data(req, res, data);
 });
 
@@ -159,11 +153,5 @@ router.get('/:tripId/booking/:bookingId/:status', (req, res, next) => {
     return res.json(trip);
   });
 });
-
-
-
-
-
-
 
 module.exports = router;
