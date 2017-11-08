@@ -1,42 +1,32 @@
 const express    = require('express');
 const router     = express.Router();
 const User      = require('../models/user');
+const response   = require('../helpers/response');
 const upload = require('../config/multer');
 
-//
-// //UPLOAD FILE
-// router.post('/upload', upload.single('file'), (req, res, next) => {
-//   const data = {
-//     userFileName: `/uploads/${req.file.userFileName}`
-//
-//   };
-//   return response.data(req, res, data);
-// });
-//
-//
-//
-// //Update USER profile
-// router.post('/:id', (req, res, next) => {
-//   const userUpdate = {
-//     name: req.body.username,
-//     email: req.body.email,
-//     phoneNumber: req.body.phoneNumber,
-//     photo: req.file.userFileName,
-//     bio: req.body.bio,
-//     paymentInfo: req.body.paymentInfo
-//   };
-//
-//   Trip.findByIdAndUpdate(req.params.id, userUpdate, (err, trip) => {
+//ONE USER profile page
+// router.get('/:id', (req, res, next) => {
+//   console.log("im in the backend route");
+//   if (!req.params.id.match(/^[a-zA-Z0-9]{24}$/)) {
+//     console.log("No match first if");
+//     return response.notFound(req, res);
+//   }
+//   User.findById(req.params.id, (err, user) => {
 //     if (err) {
+//       console.log("in findbyId but error");
 //       return next(err);
 //     }
-//     if (!trip) {
+//     if (!user) {
+//       console.log("in finbyId but no User");
 //       return response.notFound(req, res);
 //     }
-//     let data = trip.asData();
-//     return response.data(req, res, data);
+//     let data = user.asData();
+//     console.log("in finbyId shpuld give data");
+//
+//       return response.data(req, res, data);
 //   });
 // });
+
 
 
 module.exports = router;
