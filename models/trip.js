@@ -7,7 +7,8 @@ const TripSchema = new Schema({
   photos: { type: Array },
   startDate: { type: Date },
   endDate: { type: Date },
-  availableSpots: { type: Number },
+  startingSpots: { type: Number },
+  availableSpots: { type: Number},
   host: {
     type: Schema.Types.ObjectId,
     ref: 'User'
@@ -34,8 +35,9 @@ TripSchema.methods.asData = function() {
     photos: this.photos,
     startDate: this.startDate,
     endDate: this.endDate,
+    startingSpots: this.startingSpots,
     availableSpots: this.availableSpots,
-    host: this.host,      
+    host: this.host,
     price: this.price,
     name: this.name,
     boat: this.boat,
