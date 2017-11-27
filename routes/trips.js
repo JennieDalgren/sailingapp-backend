@@ -94,7 +94,7 @@ router.post('/', (req, res, next) => {
     price: req.body.price,
     availableSpots: req.body.availableSpots,
     startingSpots: req.body.startingSpots,
-    photos:[ req.body.fileName ],
+    photos: req.body.photos,
     host: req.user._id,
     tripLength: total_days
   });
