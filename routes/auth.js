@@ -92,7 +92,7 @@ router.post('/logout', (req, res) => {
 //UPLOAD FILE
 router.post('/upload', upload.single('file'), (req, res, next) => {
   const data = {
-    userFileName: `/uploads/${req.file.filename}`
+    userFileName: req.file.secure_url
 
   };
 
