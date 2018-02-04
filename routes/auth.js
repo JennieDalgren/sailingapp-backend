@@ -8,6 +8,8 @@ const User = require('../models/user').User;
 
 const upload = require('../config/multer');
 
+const REGEX_EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
 //LOGIN
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
@@ -19,7 +21,6 @@ router.post('/login', (req, res, next) => {
     }
     req.login(user, (err) => {
       if (err) {
-
         return next(err);
       }
       return response.data(req, res, req.user);
@@ -47,6 +48,9 @@ router.post('/signup', (req, res, next) => {
   }
   if (!phoneNumber) {
     return response.unprocessable(req, res, 'Missing mandatory field "Phone Number".');
+  }
+  if (!REGEX_EMAIL.test(email)) {
+    return response.unprocessable(req, res, 'Invalid email format.');
   }
 
   User.findOne({
